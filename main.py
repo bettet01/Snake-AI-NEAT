@@ -3,6 +3,8 @@ import random
 import neat
 import os
 
+from lib import visualize
+
 pygame.init()
 
 WIN_WIDTH = 600
@@ -178,7 +180,11 @@ def run(config_path):
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
 
-    winner = p.run(main, 2000)
+    winner = p.run(main, 3000)
+
+    visualize.draw_net(config, winner, True)
+    visualize.plot_stats(stats, ylog=False, view=True)
+    visualize.plot_species(stats, view=True)
 
 
 if __name__ == "__main__":

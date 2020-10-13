@@ -1,2 +1,6 @@
 neat-python==0.92
 pygame==1.9.6
+
+graphviz~=0.14.2
+matplotlib~=3.3.2
+numpy~=1.19.2
