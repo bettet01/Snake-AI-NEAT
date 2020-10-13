@@ -49,18 +49,16 @@ def display_window(win, score, snake_block, snake_list, foodx, foody):
     pygame.display.update()
 
 
-def main(genomes, config):
+def main(genome, config):
     global GENERATION_COUNT
     global SNAKE_SPEED
-
     nets = []
     ge = []
 
-    for _, g in genomes:
-        net = neat.nn.FeedForwardNetwork.create(g, config)
-        nets.append(net)
-        g.fitness = 0
-        ge.append(g)
+    net = neat.nn.FeedForwardNetwork.create(genome, config)
+    nets.append(net)
+    genome.fitness = 0
+    ge.append(genome)
 
     # loop through each snake
     for index, net in enumerate(nets):
@@ -138,11 +136,8 @@ def main(genomes, config):
             if len(snake_list) > length_of_snake:
                 del snake_list[0]
 
-            if GENERATION_COUNT % 200 == 0:
-                SNAKE_SPEED = 50
-                display_window(dis, length_of_snake - 1, SNAKE_BLOCK, snake_list, foodx, foody)
-            else:
-                SNAKE_SPEED = 2000
+            SNAKE_SPEED = 50
+            display_window(dis, length_of_snake - 1, SNAKE_BLOCK, snake_list, foodx, foody)
 
             if is_lost(snake_list, snake_head):
                 ge[index].fitness -= 50
@@ -173,24 +168,17 @@ def main(genomes, config):
 
 
 def run(config_path):
+    # load the winner
+    with open('winner-feedforward', 'rb') as f:
+        c = pickle.load(f)
+
+
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet,
                                 neat.DefaultStagnation, config_path)
-    p = neat.Population(config)
 
-    p.add_reporter(neat.StdOutReporter(True))
-    stats = neat.StatisticsReporter()
-    p.add_reporter(stats)
-
-    winner = p.run(main, 3000)
-
-    # Save the winner.
-    with open('winner-feedforward', 'wb') as f:
-        pickle.dump(winner, f)
-
-    # draw stuff
-    visualize.draw_net(config, winner, True)
-    visualize.plot_stats(stats, ylog=False, view=True)
-    visualize.plot_species(stats, view=True)
+    main(c, config)
+    pygame.quit()
+    visualize.draw_net(config, c, True)
 
 
 if __name__ == "__main__":
