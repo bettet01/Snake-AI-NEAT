@@ -159,10 +159,10 @@ def main(genomes, config):
                 running = False
 
             if head_history:
-                if abs(head_history[0] - foodx) < abs(snake_head[0] - foodx):
-                    ge[index].fitness += (600 - abs(snake_head[0] - foodx)) / 100
-                if abs(head_history[1] - foody) < abs(snake_head[1] - foody):
-                    ge[index].fitness += (500 - abs(snake_head[1] - foody)) / 100
+                if abs(head_history[0] - foodx) > abs(snake_head[0] - foodx):
+                    ge[index].fitness += 3
+                if abs(head_history[1] - foody) > abs(snake_head[1] - foody):
+                    ge[index].fitness += 3
             head_history = snake_head
             clock.tick(SNAKE_SPEED)
 
@@ -178,7 +178,7 @@ def run(config_path):
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
 
-    winner = p.run(main, 1000)
+    winner = p.run(main, 2000)
 
 
 if __name__ == "__main__":
