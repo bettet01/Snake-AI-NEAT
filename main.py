@@ -149,7 +149,7 @@ def main(genomes, config):
 
             if x1 == foodx and y1 == foody:
                 timer = 0
-                ge[index].fitness += 1000
+                ge[index].fitness += 100
                 foodx = round(random.randrange(0, WIN_WIDTH - SNAKE_BLOCK) / 10.0) * 10.0
                 foody = round(random.randrange(0, WIN_HEIGHT - SNAKE_BLOCK) / 10.0) * 10.0
                 length_of_snake += 1
@@ -157,14 +157,14 @@ def main(genomes, config):
             if timer < 500:
                 timer += 1
             else:
-                ge[index].fitness -= 100
+                ge[index].fitness -= 30
                 running = False
 
             if head_history:
                 if abs(head_history[0] - foodx) > abs(snake_head[0] - foodx):
-                    ge[index].fitness += 3
+                    ge[index].fitness += 2.5
                 if abs(head_history[1] - foody) > abs(snake_head[1] - foody):
-                    ge[index].fitness += 3
+                    ge[index].fitness += 2.5
             head_history = snake_head
             clock.tick(SNAKE_SPEED)
 
